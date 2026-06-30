@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nextle Connect | Payment</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Poppins",sans-serif;
+}
+
+body{
+background:#04140E;
+color:#fff;
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:40px 20px;
+}
+
+.container{
+width:100%;
+max-width:560px;
+background:rgba(8,24,18,.96);
+border:1px solid rgba(212,175,55,.18);
+border-radius:28px;
+padding:34px;
+box-shadow:0 30px 80px rgba(0,0,0,.6);
+position:relative;
+overflow:hidden;
+}
+
+.container::before{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(135deg,rgba(212,175,55,.08),transparent);
+pointer-events:none;
+}
+
+.brand{
+text-align:center;
+color:#D4AF37;
+letter-spacing:6px;
+font-size:13px;
+font-weight:700;
+margin-bottom:12px;
+}
+
+h1{
+text-align:center;
+font-size:28px;
+margin-bottom:10px;
+background:linear-gradient(90deg,#F7D76A,#D4AF37);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.sub{
+text-align:center;
+font-size:13px;
+color:#B8C2BC;
+margin-bottom:18px;
+}
+
+.box{
+margin-top:18px;
+padding:18px;
+border-radius:16px;
+background:rgba(255,255,255,.03);
+border:1px solid rgba(212,175,55,.15);
+}
+
+.price{
+font-size:22px;
+font-weight:700;
+color:#D4AF37;
+margin-top:8px;
+}
+
+.row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:8px;
+font-size:13px;
+color:#ccc;
+}
+
+.box strong{
+color:#D4AF37;
+font-size:13px;
+}
+
+/* COPY BUTTON */
+.copy-btn{
+margin-top:12px;
+width:100%;
+padding:10px;
+border-radius:50px;
+border:1px solid rgba(212,175,55,.4);
+background:transparent;
+color:#D4AF37;
+cursor:pointer;
+font-weight:600;
+transition:.3s;
+}
+
+.copy-btn:hover{
+background:rgba(212,175,55,.1);
+transform:translateY(-1px);
+}
+
+button{
+width:100%;
+margin-top:22px;
+padding:15px;
+border:none;
+border-radius:50px;
+background:linear-gradient(90deg,#D4AF37,#F7D76A);
+font-weight:700;
+cursor:pointer;
+color:#08140F;
+transition:.3s;
+}
+
+button:hover{
+transform:translateY(-2px);
+}
+
+.success{
+display:none;
+margin-top:18px;
+padding:14px;
+border-radius:14px;
+background:rgba(16,185,129,.12);
+border:1px solid rgba(16,185,129,.25);
+text-align:center;
+color:#34D399;
+}
+
+.note{
+margin-top:15px;
+font-size:12px;
+color:#aaa;
+text-align:center;
+}
+
+#planTag{
+margin-top:6px;
+font-size:12px;
+color:#aaa;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="brand">NEXTLE CONNECT</div>
+
+<h1>Complete Payment</h1>
+
+<p class="sub">Secure your eSIM activation</p>
+
+<div class="box">
+<div id="planName">Loading...</div>
+<div class="price" id="planPrice"></div>
+<div id="planTag"></div>
+</div>
+
+<!-- PAYMENT 1 -->
+<div class="box">
+
+<strong>PAYMENT DETAILS</strong>
+
+<div class="row"><span>Bank</span><span>Smartcash</span></div>
+<div class="row"><span>Account Name</span><span>Moja Coutre</span></div>
+<div class="row"><span>Account Number</span><span>5551096870</span></div>
+
+<button class="copy-btn"
+onclick="copyAccount('Smartcash','Moja Coutre','5551096870',this)">
+Copy Account
+</button>
+
+</div>
+
+<!-- PAYMENT 2 -->
+<div class="box">
+
+<strong>DETAILS 2</strong>
+
+<div class="row"><span>Bank</span><span>Smartcash</span></div>
+<div class="row"><span>Account Name</span><span>Moja Coutre</span></div>
+<div class="row"><span>Account Number</span><span>5551096870</span></div>
+
+<button class="copy-btn"
+onclick="copyAccount('Smartcash','Moja Coutre','5551096870',this)">
+Copy Account
+</button>
+
+</div>
+
+<button id="confirmBtn">I Have Paid</button>
+
+<div class="success" id="successBox">
+Payment submitted successfully. Redirecting...
+</div>
+
+<div class="note">
+After payment, click the button to notify support.
+</div>
+
+</div>
+
+<script>
+
+/* PLAN SYSTEM */
+const params = new URLSearchParams(window.location.search);
+const plan = (params.get("plan") || "").toLowerCase().trim();
+
+let planData = {
+name: "Unknown Package",
+price: "--",
+tag: "❌ Invalid selection"
+};
+
+if(plan === "diamond"){
+planData = {
+name: "💎 Diamond eSIM Package",
+price: "₦10,500",
+tag: "Diamond selected"
+};
+}
+
+if(plan === "royale"){
+planData = {
+name: "👑 Royale eSIM Package",
+price: "₦17,500",
+tag: "Royale selected"
+};
+}
+
+document.getElementById("planName").innerText = planData.name;
+document.getElementById("planPrice").innerText = planData.price;
+document.getElementById("planTag").innerText = planData.tag;
+
+/* COPY FUNCTION */
+function copyAccount(bank, name, number, btn){
+
+const text =
+`Bank: ${bank}\nAccount Name: ${name}\nAccount Number: ${number}`;
+
+navigator.clipboard.writeText(text);
+
+const old = btn.innerText;
+btn.innerText = "Copied ✓";
+
+setTimeout(()=>{
+btn.innerText = old;
+},1500);
+
+}
+
+/* BUTTON ACTION */
+const btn = document.getElementById("confirmBtn");
+const success = document.getElementById("successBox");
+
+btn.addEventListener("click",()=>{
+
+btn.innerText = "Processing...";
+btn.disabled = true;
+
+success.style.display = "block";
+
+setTimeout(()=>{
+window.location.href = "https://t.me/Ann2012";
+},2000);
+
+});
+
+</script>
+
+</body>
+</html>
